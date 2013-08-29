@@ -1,0 +1,1 @@
+var filters = angular.module('LightmineApp.filters', []);

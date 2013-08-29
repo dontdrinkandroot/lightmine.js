@@ -1,0 +1,12 @@
+<div class="page-header">
+	<h1>Projects</h1>
+</div>
+
+<div class="panel panel-default" ng-repeat="project in projects">
+	<div class="panel-heading">
+		<h2 class="panel-title"><a href="#!/project/{{project.id}}">{{project.name}}</a></h2>
+	</div>
+	<div class="panel-body">
+		{{project.description}}
+	</div>
+</div>

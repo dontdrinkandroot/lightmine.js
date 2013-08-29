@@ -1,0 +1,1 @@
+var directives = angular.module('LightmineApp.directives', []);
