@@ -7,6 +7,13 @@
 		<h2 class="panel-title"><a href="#!/project/{{project.id}}">{{project.name}}</a></h2>
 	</div>
 	<div class="panel-body">
-		{{project.description}}
+		<div class="row">
+			<div class="col-sm-6">{{project.description}}</div>
+			<div class="col-sm-6">
+				<ul class="margin-bottom-none">
+					<li ng-repeat="subProject in project.children"><a href="#!/project/{{subProject.id}}">{{subProject.name}}</a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
 </div>

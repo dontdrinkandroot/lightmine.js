@@ -9,14 +9,14 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
 		controller : LoginController
 	});
 	
-	$routeProvider.when('/project/:id', {
-		templateUrl : 'partials/project/index.html',
-		controller : ProjectIndexController
-	});
-	
 	$routeProvider.when('/project', {
 		templateUrl : 'partials/project/list.html',
 		controller : ProjectListController
+	});
+	
+	$routeProvider.when('/project/:id', {
+		templateUrl : 'partials/project/index.html',
+		controller : ProjectIndexController
 	});
 	
 	$routeProvider.otherwise({

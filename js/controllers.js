@@ -1,8 +1,17 @@
-function LoginController($scope, $rootScope, $location, $cookies, UserService, ConfigurationService, UserService) {
+function LoginController($scope, $rootScope, $location, $cookies, UserService, ConfigurationService, UserService, ProjectService) {
 	
 	$scope.submitting = false;
 	$scope.baseUrl = $cookies.baseUrl;
 	$scope.apiKey = $cookies.apiKey;
+	
+	var initAppAndRedirect = function() {
+		
+		ProjectService.getTopLevelProjects().then(function(projects) {
+			$rootScope.projects = projects;
+			$scope.submitting = false;
+			$location.path("/project");
+		});
+	}
 	
 	/* Try login based on cookie */
 	if ($scope.baseUrl !== undefined && $scope.apiKey !== undefined) {
@@ -13,9 +22,8 @@ function LoginController($scope, $rootScope, $location, $cookies, UserService, C
 		
 		UserService.getCurrent()
 			.success(function(data) {
-				$scope.submitting = false;
 				$rootScope.user = data.user;
-				$location.path("/project");
+				initAppAndRedirect();
 			})
 			.error(function(data, status, headers, config) {
 				$scope.submitting = false;
@@ -34,9 +42,8 @@ function LoginController($scope, $rootScope, $location, $cookies, UserService, C
 			.success(function(data) {
 				$cookies.baseUrl = $scope.baseUrl;
 				$cookies.apiKey = $scope.apiKey;
-				$scope.submitting = false;
 				$rootScope.user = data.user;
-				$location.path("/project");
+				initAppAndRedirect();
 			})
 			.error(function(data, status, headers, config) {
 				$scope.error = "Login failed with status " + status;
@@ -48,29 +55,14 @@ function LoginController($scope, $rootScope, $location, $cookies, UserService, C
 
 
 function ProjectListController($scope, ProjectService) {
-	
-	ProjectService.getAll()
-		.success(function(data) {
-			$scope.projects = data.projects;
-			$scope.pagination = {
-				'offset' : data.offset,
-				'total' : data.total_count,
-				'limit' : data.limit
-			}
-		})
-		.error(function(data, status, headers, config) {
-		});
 }
 
 
 function ProjectIndexController($scope, $routeParams, ProjectService, IssueService) {
 	
-	ProjectService.get($routeParams.id)
-		.success(function(data) {
-			$scope.project = data.project;
-		})
-		.error(function(data, status, headers, config) {
-		});
+	ProjectService.get($routeParams.id).then(function(project) {
+		$scope.project = project;
+	});
 	
 	IssueService.getAllByProject($routeParams.id)
 		.success(function(data) {
@@ -85,4 +77,8 @@ function ProjectIndexController($scope, $routeParams, ProjectService, IssueServi
 		})
 		.error(function(data, status, headers, config) {
 		});
+}
+
+
+function NavigationController($scope, ProjectService) {
 }
