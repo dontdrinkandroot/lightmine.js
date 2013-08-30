@@ -1,10 +1,12 @@
-function LoginController($scope, $rootScope, $location, $cookies, UserService, ConfigurationService, UserService, ProjectService) {
+function LoginController($scope, $rootScope, $location, UserService, ConfigurationService, UserService, ProjectService) {
 	
 	$scope.submitting = false;
-	$scope.baseUrl = $cookies.baseUrl;
-	$scope.apiKey = $cookies.apiKey;
+	$scope.baseUrl = $.cookie('baseUrl');
+	$scope.apiKey = $.cookie('apiKey');
 	
-	var initAppAndRedirect = function() {
+	var initAppAndRedirect = function(user) {
+		
+		$rootScope.user = user;
 		
 		ProjectService.getTopLevelProjects().then(function(projects) {
 			$rootScope.projects = projects;
@@ -22,8 +24,7 @@ function LoginController($scope, $rootScope, $location, $cookies, UserService, C
 		
 		UserService.getCurrent()
 			.success(function(data) {
-				$rootScope.user = data.user;
-				initAppAndRedirect();
+				initAppAndRedirect(data.user);
 			})
 			.error(function(data, status, headers, config) {
 				$scope.submitting = false;
@@ -40,10 +41,9 @@ function LoginController($scope, $rootScope, $location, $cookies, UserService, C
 		
 		UserService.getCurrent()
 			.success(function(data) {
-				$cookies.baseUrl = $scope.baseUrl;
-				$cookies.apiKey = $scope.apiKey;
-				$rootScope.user = data.user;
-				initAppAndRedirect();
+				$.cookie('baseUrl', $scope.baseUrl);
+				$.cookie('apiKey', $scope.apiKey, { expires: 365 });
+				initAppAndRedirect(data.user);
 			})
 			.error(function(data, status, headers, config) {
 				$scope.error = "Login failed with status " + status;
