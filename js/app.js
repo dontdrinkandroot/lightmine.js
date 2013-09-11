@@ -19,6 +19,16 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
 		controller : ProjectIndexController
 	});
 	
+	$routeProvider.when('/issue/:id/edit', {
+		templateUrl : 'partials/issue/edit.html',
+		controller : IssueEditController
+	});
+	
+	$routeProvider.when('/issue/create', {
+		templateUrl : 'partials/issue/create.html',
+		controller : IssueCreateController
+	});
+	
 	$routeProvider.otherwise({
 		redirectTo : 'project'
 	});

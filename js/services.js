@@ -24,11 +24,33 @@ services.service('ConfigurationService', function($http) {
 });
 
 
-services.service('UserService', function($http, ConfigurationService) {
+services.service('UserService', function($http, $q, ConfigurationService) {
+	
+	var users = undefined;
 	
 	this.getCurrent = function() {
 		return $http.get(ConfigurationService.getRestServiceBase() + "/users/current.json");
 	}
+	
+	this.getAllUsers = function() {
+		
+		var deferred = $q.defer();
+		
+		if (users !== undefined) {
+			
+			deferred.resolve(users);
+			
+		} else {
+			
+			$http.get(ConfigurationService.getRestServiceBase() + "/users.json?limit=1000").then(function(response) {
+				
+				users = response.data.users;
+				deferred.resolve(users);	
+			});
+		}
+		
+		return deferred.promise;
+	};
 });
 
 
@@ -38,6 +60,7 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 	
 	var projectMap = undefined;
 	var topLevelProjects = undefined;
+	var allProjects = undefined;
 	var loadPromise = undefined;
 	
 	this.loadProjects = function() {
@@ -58,6 +81,7 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 				
 				projectMap = {};
 				topLevelProjects = new Array();
+				allProjects = response.data.projects;
 				
 				/* First pass, hash projects */
 				for (var i = 0; i < response.data.projects.length; i++) {
@@ -99,12 +123,100 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 			return projectMap[id];
 		});
 	}
+	
+	//TODO: reload projects after delete
+	this.delete = function(id) {
+		return $http.delete(ConfigurationService.getRestServiceBase() + "/projects/" + id + ".json");
+	}
+	
+	this.getAllProjects = function() {
+		
+		return projectService.loadProjects().then(function(projects) {
+			return allProjects;
+		});
+	}
 });
 
 
-services.service('IssueService', function($http, ConfigurationService) {
+services.service('IssueService', function($http, $q, ConfigurationService) {
+	
+	var issueIdMap = {};
+	var issueStatuses = undefined;
 	
 	this.getAllByProject = function(projectId) {
-		return $http.get(ConfigurationService.getRestServiceBase() + "/issues.json?project_id=" + projectId);
+		return $http.get(ConfigurationService.getRestServiceBase() + "/issues.json?project_id=" + projectId).then(function(response) {
+			
+			for (var i = 0; i < response.data.issues.length; i++) {
+				var issue = response.data.issues[i];
+				issueIdMap[issue.id] = issue;
+			}
+			
+			return response.data;
+		});
 	}
+	
+	this.getIssueStatuses = function() {
+		
+		var deferred = $q.defer();
+		
+		if (issueStatuses !== undefined) {
+			
+			deferred.resolve(issueStatuses);
+			
+		} else {
+			
+			$http.get(ConfigurationService.getRestServiceBase() + "/issue_statuses.json").then(function(response) {
+				issueStatuses = response.data.issue_statuses;
+				deferred.resolve(issueStatuses);	
+			});
+		}
+		
+		return deferred.promise;
+	}
+	
+	this.getCategoriesByProject = function(projectId) {
+		return $http.get(ConfigurationService.getRestServiceBase() + '/projects/' + projectId + '/issue_categories.json').then(function(response) {
+			return response.data.issue_categories;
+		});
+	}
+	
+	
+	this.get = function(id) {
+		
+		var deferred = $q.defer();
+		
+		if (issueIdMap[id] !== undefined) {
+			
+			deferred.resolve(issueIdMap[id]);
+			
+		} else {
+			
+			$http.get(ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json").then(function(response) {
+				var issue = response.data.issue;
+				issueIdMap[issue.id] = issue;
+				deferred.resolve(issue);
+			});
+		}
+		
+		return deferred.promise;
+	}
+	
+	
+	this.edit = function(id, submission) {
+		
+		return $http.put(ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json", submission).then(function(response) {
+			delete issueIdMap[id];
+			return response;
+		});
+		
+	};
+	
+	this.create = function(submission) {
+		
+		return $http.post(ConfigurationService.getRestServiceBase() + "/issues.json", submission).then(function(response) {
+			issueIdMap[response.data.issue.id] = response.data.issue;
+			return response.data.issue;
+		});
+		
+	};
 });
