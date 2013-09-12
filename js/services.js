@@ -26,7 +26,7 @@ services.service('ConfigurationService', function($http) {
 
 services.service('UserService', function($http, $q, ConfigurationService) {
 	
-	var users = undefined;
+	var allUsersPromise = undefined;
 	
 	this.getCurrent = function() {
 		return $http.get(ConfigurationService.getRestServiceBase() + "/users/current.json");
@@ -34,22 +34,16 @@ services.service('UserService', function($http, $q, ConfigurationService) {
 	
 	this.getAllUsers = function() {
 		
-		var deferred = $q.defer();
-		
-		if (users !== undefined) {
-			
-			deferred.resolve(users);
-			
-		} else {
-			
-			$http.get(ConfigurationService.getRestServiceBase() + "/users.json?limit=1000").then(function(response) {
-				
-				users = response.data.users;
-				deferred.resolve(users);	
-			});
+		if (angular.isDefined(allUsersPromise)) {
+			return allUsersPromise;
 		}
 		
-		return deferred.promise;
+			
+		allUsersPromise = $http.get(ConfigurationService.getRestServiceBase() + "/users.json?limit=1000").then(function(response) {
+			return response.data.users;
+		});
+		
+		return allUsersPromise;
 	};
 });
 
@@ -62,6 +56,8 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 	var topLevelProjects = undefined;
 	var allProjects = undefined;
 	var loadPromise = undefined;
+	
+	var trackersPromise = undefined;
 	
 	this.loadProjects = function() {
 		
@@ -126,9 +122,21 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 	
 	this.getVersions = function(id) {
 		return $http.get(ConfigurationService.getRestServiceBase() + "/projects/" + id + "/versions.json").then(function(response) {
-			console.log(response);
 			return response.data.versions;
 		});
+	}
+	
+	this.getTrackers = function() {
+		
+		if (angular.isDefined(trackersPromise)) {
+			return trackersPromise;
+		}
+		
+		trackersPromise = $http.get(ConfigurationService.getRestServiceBase() + "/trackers.json").then(function(response) {
+			return response.data.trackers;
+		});
+		
+		return trackersPromise;
 	}
 	
 	//TODO: reload projects after delete

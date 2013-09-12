@@ -29,6 +29,20 @@
 	</div>
 	
 	<div class="form-group">
+		<label for="tracker" class="col-lg-2 control-label">Tracker</label>
+		<div class="col-lg-10">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="tracker">
+					{{issue.tracker.name}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li ng-repeat="tracker in trackers"><a class="link" ng-click="setTracker(tracker)">{{tracker.name}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group">
 		<label for="status" class="col-lg-2 control-label">Status</label>
 		<div class="col-lg-10">
 			<div class="btn-group">
@@ -96,5 +110,4 @@
 <!-- tracker_id
 priority_id
 category_id
-fixed_version_id - ID of the Target Versions (previously called 'Fixed Version' and still referred to as such in the API)
 parent_issue_id - ID of the parent issue -->

@@ -93,6 +93,10 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 		$scope.statuses = statuses;
 	});
 	
+	ProjectService.getTrackers().then(function(trackers) {
+		$scope.trackers = trackers;
+	});
+	
 	UserService.getAllUsers().then(function(users) {
 		$scope.users = users;
 	});
@@ -115,6 +119,10 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 	
 	$scope.setVersion = function(version) {
 		$scope.issue.fixed_version = version;
+	}
+	
+	$scope.setTracker = function(tracker) {
+		$scope.issue.tracker = tracker;
 	}
 	
 	$scope.$watch("issue.project", function() {
@@ -200,7 +208,11 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 			submission.issue.fixed_version_id = null;
 		}
 		
-		console.log(submission);
+		if (angular.isDefined($scope.issue.tracker) && angular.isDefined($scope.issue.tracker.id)) {
+			submission.issue.tracker_id = $scope.issue.tracker.id;
+		} else {
+			submission.issue.tracker_id = null;
+		}
 		
 		return submission;
 	}
