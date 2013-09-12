@@ -11,19 +11,16 @@
 <div spinner="issues" class="centered"></div>
 <div class="panel panel-default" ng-repeat="issue in issues.entries">
 	<div class="panel-heading">
-		<h3 class="panel-title"><a href="#!/issue/{{issue.id}}/edit">{{issue.id}}: {{issue.subject}}</a> <span class="badge">{{issue.tracker.name}}</span></h3>
+		<h3 class="panel-title"><span class="badge pull-right">{{issue.tracker.name}}</span> <a href="#!/issue/{{issue.id}}/edit">{{issue.subject}}</a></h3>
 	</div>
 	<div class="panel-body">
 		<div class="row">
-			<div class="col-sm-6">Status: {{issue.status.name}}</div>
-			<div class="col-sm-6">Priority: {{issue.priority.name}}</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-6">Author: {{issue.author.name}}</div>
-			<div class="col-sm-6">Assigned to: {{issue.assigned_to.name}}</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-6">Version: {{issue.version.name}}</div>
+			<div class="col-sm-6 col-md-4 col-lg-3">Id: {{issue.id}}</div>
+			<div class="col-sm-6 col-md-4 col-lg-3">Status: {{issue.status.name}}</div>
+			<div class="col-sm-6 col-md-4 col-lg-3">Priority: {{issue.priority.name}}</div>
+			<div class="col-sm-6 col-md-4 col-lg-3">Assigned to: {{issue.assigned_to.name}}</div>
+			<div class="col-sm-6 col-md-4 col-lg-3">Version: {{issue.fixed_version.name}}</div>
+			<div class="col-sm-6 col-md-4 col-lg-3">Author: {{issue.author.name}}</div>
 		</div>
 	</div>
 </div>
