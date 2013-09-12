@@ -1,8 +1,6 @@
 function LoginController($scope, $rootScope, $location, UserService, ConfigurationService, UserService, ProjectService) {
 	
 	$scope.submitting = false;
-	$scope.baseUrl = $.cookie('baseUrl');
-	$scope.apiKey = $.cookie('apiKey');
 	
 	var initAppAndRedirect = function(user) {
 		
@@ -13,22 +11,6 @@ function LoginController($scope, $rootScope, $location, UserService, Configurati
 			$scope.submitting = false;
 			$location.path("/project");
 		});
-	}
-	
-	/* Try login based on cookie */
-	if ($scope.baseUrl !== undefined && $scope.apiKey !== undefined) {
-		
-		ConfigurationService.setRestServiceBase($scope.baseUrl);
-		ConfigurationService.setApiKey($scope.apiKey);
-		$scope.submitting = true;
-		
-		UserService.getCurrent()
-			.success(function(data) {
-				initAppAndRedirect(data.user);
-			})
-			.error(function(data, status, headers, config) {
-				$scope.submitting = false;
-			});
 	}
 	
 	$scope.signIn = function() {

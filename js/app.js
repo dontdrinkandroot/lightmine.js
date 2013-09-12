@@ -36,6 +36,34 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
 	$locationProvider.hashPrefix('!');
 }])
 
-.run(function($location) {
-	$location.path('/login');
+.run(function($rootScope, $location, UserService, ProjectService, ConfigurationService) {
+	
+	var requestedPath = $location.path();
+	var baseUrl = $.cookie('baseUrl');
+	var apiKey = $.cookie('apiKey');
+	
+	/* Try login based on cookie */
+	if (baseUrl !== undefined && apiKey !== undefined) {
+		
+		ConfigurationService.setRestServiceBase(baseUrl);
+		ConfigurationService.setApiKey(apiKey);
+		
+		UserService.getCurrent()
+			.success(function(data) {
+				
+				$rootScope.user = data.user;
+				
+				ProjectService.getTopLevelProjects().then(function(projects) {
+					$rootScope.topLevelProjects = projects;
+				});
+			})
+			.error(function(data, status, headers, config) {
+				$location.path('/login');
+			});
+		
+	} else {
+		
+		$location.path('/login');
+	}
+	
 });
