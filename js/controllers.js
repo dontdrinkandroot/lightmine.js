@@ -40,10 +40,10 @@ function ProjectListController($scope, ProjectService) {
 }
 
 
-function ProjectIndexController($scope, $window, $routeParams, $location, ProjectService, IssueService) {
+function ProjectIndexController($scope, $rootScope, $window, $routeParams, $location, ProjectService, IssueService) {
 	
 	ProjectService.get($routeParams.id).then(function(project) {
-		$scope.project = project;
+		$rootScope.project = project;
 	});
 	
 	IssueService.getAllByProject($routeParams.id)
@@ -66,10 +66,6 @@ function ProjectIndexController($scope, $window, $routeParams, $location, Projec
 			});
 		}
 	}
-}
-
-
-function NavigationController($scope, ProjectService) {
 }
 
 
@@ -174,6 +170,7 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
 	$scope.issue = {};
 	
 	ProjectService.get($routeParams.project_id).then(function(project) {
+		$rootScope.project = project;
 		$scope.issue.project = project;
 	});
 	
@@ -203,6 +200,7 @@ function IssueEditController($injector, $scope, ProjectService, IssueService, Us
 	
 	IssueService.get($routeParams.id).then(function(issue) {
 		$scope.issue = issue;
+		$rootScope.project = $scope.issue.project;
 	});
 	
 	$scope.submit = function() {
