@@ -27,3 +27,74 @@ h2, .h2 { font-size: ceil(@font-size-base * 1.70); } // ~24px
 h3, .h3 { font-size: ceil(@font-size-base * 1.25); } // ~18px
 h4, .h4 { font-size:  @font-size-base; }
 h5, .h5 { font-size: ceil(@font-size-base * 0.85); } // ~12px
+
+.navbar-nav {
+    
+     .open .dropdown-menu {
+     
+      	li > a {
+    		display: block;
+    		padding: 3px 20px;
+    		clear: both;
+    		font-weight: normal;
+    		line-height: @line-height-base;
+    		color: @dropdown-link-color;
+    		white-space: nowrap; // prevent links from randomly breaking onto new lines
+    		
+    		&:hover,
+  			&:focus {
+    			text-decoration: none;
+    			color: @dropdown-link-hover-color;
+    			background-color: @dropdown-link-hover-bg;
+  			}
+  		}
+  		
+  		li > ul {
+    		padding-left: 20px;
+    		list-style-type: none;
+    	}
+     }
+     
+     @media (max-width: @screen-xs-max) {
+     
+     	 .open .dropdown-menu {
+     	 
+			li > a, .dropdown-header {
+				padding: 5px 15px 5px 25px;
+			}
+			
+			li > a {
+				color: @navbar-inverse-link-color;
+				&:hover,
+				&:focus {
+					color: @navbar-inverse-link-hover-color;
+					background-color: @navbar-inverse-link-hover-bg;
+				}
+			}
+			
+			.active > a {
+				&,
+				&:hover,
+				&:focus {
+					color: @navbar-inverse-link-active-color;
+					background-color: @navbar-inverse-link-active-bg;
+				}
+			}
+			
+			.disabled > a {
+				&,
+				&:hover,
+				&:focus {
+					color: @navbar-inverse-link-disabled-color;
+					background-color: @navbar-inverse-link-disabled-bg;
+          		}
+        	}
+			
+			li > ul {
+    			padding-left: 25px;
+	    		list-style-type: none;
+    		}
+     	}
+     }
+     
+}
