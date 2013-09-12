@@ -40,7 +40,19 @@ function ProjectListController($scope, ProjectService) {
 }
 
 
-function ProjectIndexController($scope, $rootScope, $window, $routeParams, $location, ProjectService, IssueService) {
+function ProjectVersionsController($scope, $rootScope, $routeParams, ProjectService) {
+	
+	ProjectService.get($routeParams.id).then(function(project) {
+		$rootScope.project = project;
+	});
+	
+	ProjectService.getVersions($routeParams.id).then(function(versions) {
+		$scope.versions = versions;
+	});
+}
+
+
+function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $location, ProjectService, IssueService) {
 	
 	ProjectService.get($routeParams.id).then(function(project) {
 		$rootScope.project = project;
@@ -101,10 +113,30 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 		$scope.issue.project = project;
 	}
 	
+	$scope.setVersion = function(version) {
+		$scope.issue.fixed_version = version;
+	}
+	
 	$scope.$watch("issue.project", function() {
-		if (angular.isDefined($scope.issue.project)) {
+		
+		if (angular.isDefined($scope.issue) && angular.isDefined($scope.issue.project)) {
+			
+			/* Reset category if not initial assignment */
+			if (angular.isDefined($scope.categories)) {
+				delete $scope.issue.category;
+			}
+			
+			/* Reset version if not initial assignment */
+			if (angular.isDefined($scope.versions)) {
+				delete $scope.issue.fixed_version;
+			}
+			
 			IssueService.getCategoriesByProject($scope.issue.project.id).then(function(categories) {
 				$scope.categories = categories;
+			});
+			
+			ProjectService.getVersions($scope.issue.project.id).then(function(versions) {
+				$scope.versions = versions;
 			});
 		}
 	});
@@ -140,22 +172,32 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 		
 		if ($scope.issue.category && angular.isDefined($scope.issue.category.id)) {
 			submission.issue.category_id = $scope.issue.category.id;
-		}
-		
-		if ($scope.issue.fixed_version && angular.isDefined($scope.issue.fixed_version.id)) {
-			submission.issue.fixed_version_id = $scope.issue.fixed_version.id;
+		} else {
+			submission.issue.category_id = null;
 		}
 		
 		if ($scope.issue.assigned_to && angular.isDefined($scope.issue.assigned_to.id)) {
 			submission.issue.assigned_to_id = $scope.issue.assigned_to.id;
+		} else {
+			submission.issue.assigned_to_id = null;
 		}
 		
 		if ($scope.issue.parent_issue && angular.isDefined($scope.issue.parent_issue.id)) {
 			submission.issue.parent_issue_id = $scope.issue.parent_issue.id;
+		} else {
+			submission.issue.parent_issue_id = null;
 		}
 		
-		if (angular.isDefined($scope.issue.category)) {
+		if (angular.isDefined($scope.issue.category) && angular.isDefined($scope.issue.category.id)) {
 			submission.issue.category_id = $scope.issue.category.id;
+		} else {
+			submission.issue.category_id = null;
+		}
+		
+		if (angular.isDefined($scope.issue.fixed_version) && angular.isDefined($scope.issue.fixed_version.id)) {
+			submission.issue.fixed_version_id = $scope.issue.fixed_version.id;
+		} else {
+			submission.issue.fixed_version_id = null;
 		}
 		
 		console.log(submission);
@@ -165,7 +207,7 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 }
 
 
-function IssueCreateController($injector, $scope, ProjectService, IssueService, UserService, $routeParams, $location) {
+function IssueCreateController($injector, $scope, ProjectService, IssueService, UserService, $routeParams, $location, $rootScope) {
 	
 	$scope.issue = {};
 	
@@ -196,7 +238,7 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
 IssueCreateController.prototype = Object.create(IssueFormController.prototype);
 
 
-function IssueEditController($injector, $scope, ProjectService, IssueService, UserService, $routeParams, $location) {
+function IssueEditController($injector, $scope, ProjectService, IssueService, UserService, $routeParams, $location, $rootScope) {
 	
 	IssueService.get($routeParams.id).then(function(issue) {
 		$scope.issue = issue;

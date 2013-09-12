@@ -1,12 +1,12 @@
-<div class="page-header">
-	<div class="btn-group pull-right">
-		<a class="btn btn-default" title="Create Issue" href="#!/issue/create?project_id={{project.id}}"><i class="glyphicon glyphicon-plus"></i></a>
- 		<button type="button" class="btn btn-default" title="Delete Project"><i class="glyphicon glyphicon-trash link" ng-click="delete(project.id)"></i></button>
-	</div>
-	<h1>{{project.name}}</h1>
+<div class="btn-group pull-right">
+	<a class="btn btn-default" title="Create Issue" href="#!/issue/create?project_id={{project.id}}"><i class="glyphicon glyphicon-plus"></i></a>
+	<a class="btn btn-default" title="Edit Project" href="#!/project/{{project.id}}/edit"><i class="glyphicon glyphicon-pencil"></i></a>
+	<button type="button" class="btn btn-default" title="Delete Project"><i class="glyphicon glyphicon-trash link" ng-click="delete(project.id)"></i></button>
 </div>
-
-<h2>Issues</h2>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#!/project/{{project.id}}/issues">Issues</a></li>
+  <li><a href="#!/project/{{project.id}}/versions">Versions</a></li>
+</ul>
 
 <div spinner="issues" class="centered"></div>
 <div class="panel panel-default" ng-repeat="issue in issues.entries">

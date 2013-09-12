@@ -15,8 +15,18 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
 	});
 	
 	$routeProvider.when('/project/:id', {
-		templateUrl : 'partials/project/index.html',
-		controller : ProjectIndexController
+		templateUrl : 'partials/project/issues.html',
+		controller : ProjectIssuesController
+	});
+	
+	$routeProvider.when('/project/:id/issues', {
+		templateUrl : 'partials/project/issues.html',
+		controller : ProjectIssuesController
+	});
+	
+	$routeProvider.when('/project/:id/versions', {
+		templateUrl : 'partials/project/versions.html',
+		controller : ProjectVersionsController
 	});
 	
 	$routeProvider.when('/issue/:id/edit', {

@@ -57,6 +57,21 @@
 	</div>
 	
 	<div class="form-group">
+		<label for="targetversion" class="col-lg-2 control-label">Target Version</label>
+		<div class="col-lg-10">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="targetversion">
+					{{issue.fixed_version.name}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a class="link" ng-click="setVersion({})">&nbsp;</a></li>
+					<li ng-repeat="version in versions"><a class="link" ng-click="setVersion(version)">{{version.name}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group">
 		<label for="category" class="col-lg-2 control-label">Category</label>
 		<div class="col-lg-10">
 			<div class="btn-group">

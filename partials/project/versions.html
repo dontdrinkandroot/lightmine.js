@@ -1,0 +1,21 @@
+<div class="btn-group pull-right">
+	<a class="btn btn-default" title="Create Issue" href="#!/issue/create?project_id={{project.id}}"><i class="glyphicon glyphicon-plus"></i></a>
+	<a class="btn btn-default" title="Edit Project" href="#!/project/{{project.id}}/edit"><i class="glyphicon glyphicon-pencil"></i></a>
+	<button type="button" class="btn btn-default" title="Delete Project"><i class="glyphicon glyphicon-trash link" ng-click="delete(project.id)"></i></button>
+</div>
+<ul class="nav nav-tabs">
+  <li><a href="#!/project/{{project.id}}/issues">Issues</a></li>
+  <li class="active"><a href="#!/project/{{project.id}}/versions">Versions</a></li>
+</ul>
+
+<div spinner="versions" class="centered"></div>
+<div class="panel panel-default" ng-repeat="version in versions">
+	<div class="panel-heading">
+		<h3 class="panel-title">{{version.name}}</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-lg-3">Status: {{version.status}}</div>
+		</div>
+	</div>
+</div>

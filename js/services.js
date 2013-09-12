@@ -124,6 +124,13 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 		});
 	}
 	
+	this.getVersions = function(id) {
+		return $http.get(ConfigurationService.getRestServiceBase() + "/projects/" + id + "/versions.json").then(function(response) {
+			console.log(response);
+			return response.data.versions;
+		});
+	}
+	
 	//TODO: reload projects after delete
 	this.delete = function(id) {
 		return $http.delete(ConfigurationService.getRestServiceBase() + "/projects/" + id + ".json");
