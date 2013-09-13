@@ -1,5 +1,7 @@
 <form class="form-horizontal" role="form" ng-submit="submit()">
 
+	<div ng-repeat="error in errors" class="alert alert-danger">{{error}}</div>
+
 	<div class="form-group">
 		<label for="subject" class="col-md-2 control-label">Subject</label>
 		<div class="col-md-10">
@@ -107,7 +109,7 @@
 	</div>
 </form>
 
-<!-- tracker_id
+<!--
 priority_id
 category_id
 parent_issue_id - ID of the parent issue -->

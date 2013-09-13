@@ -229,12 +229,16 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
 	});
 	
 	$scope.submit = function() {
+		
+		$scope.submitting = true;
+		delete $scope.errors;
 		IssueService.create($scope.buildSubmission()).then(
 				function() {
 					$scope.submitting = false;
 					$location.path("project/" + $scope.issue.project.id);
 				},
-				function() {
+				function(response) {
+					$scope.errors = response.data.errors;
 					$scope.submitting = false;
 				}
 			);
@@ -260,12 +264,14 @@ function IssueEditController($injector, $scope, ProjectService, IssueService, Us
 	$scope.submit = function() {
 		
 		$scope.submitting = true;
+		delete $scope.errors;
 		IssueService.edit($routeParams.id, $scope.buildSubmission()).then(
 			function() {
 				$scope.submitting = false;
 				$location.path("project/" + $scope.issue.project.id);
 			},
-			function() {
+			function(response) {
+				$scope.errors = response.data.errors;
 				$scope.submitting = false;
 			}
 		);
