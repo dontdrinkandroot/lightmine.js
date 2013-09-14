@@ -217,7 +217,17 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 	}
 	
 	
-	this.edit = function(id, submission) {
+	this.delete = function(id, submission) {
+		
+		return $http.delete(ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json", submission).then(function(response) {
+			delete issueIdMap[id];
+			console.log(response);
+		});
+		
+	};
+	
+	
+	this.update = function(id, submission) {
 		
 		return $http.put(ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json", submission).then(function(response) {
 			delete issueIdMap[id];

@@ -58,17 +58,30 @@ function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $loc
 		$rootScope.project = project;
 	});
 	
-	IssueService.getAllByProject($routeParams.id)
-		.then(function(data) {
-			$scope.issues = {
-				'entries' : data.issues,
-				'pagination' : {
-					'offset' : data.offset,
-					'total' : data.total_count,
-					'limit' : data.limit
+	$scope.loadIssues = function() {
+	
+		delete $scope.issues;
+		IssueService.getAllByProject($routeParams.id)
+			.then(function(data) {
+				$scope.issues = {
+					'entries' : data.issues,
+					'pagination' : {
+						'offset' : data.offset,
+						'total' : data.total_count,
+						'limit' : data.limit
+					}
 				}
-			}
-		});
+			});
+	}
+	
+	$scope.deleteIssue = function(issue) {
+		
+		if ($window.confirm('Are you sure you wish to delete the issue?')) {
+			IssueService.delete(issue.id).then(function() {
+				$scope.loadIssues();
+			});
+		}
+	}
 	
 	$scope.delete = function(id) {
 		
@@ -78,6 +91,8 @@ function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $loc
 			});
 		}
 	}
+	
+	$scope.loadIssues();
 }
 
 
@@ -265,7 +280,7 @@ function IssueEditController($injector, $scope, ProjectService, IssueService, Us
 		
 		$scope.submitting = true;
 		delete $scope.errors;
-		IssueService.edit($routeParams.id, $scope.buildSubmission()).then(
+		IssueService.update($routeParams.id, $scope.buildSubmission()).then(
 			function() {
 				$scope.submitting = false;
 				$location.path("project/" + $scope.issue.project.id);
