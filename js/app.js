@@ -48,32 +48,7 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
 
 .run(function($rootScope, $location, UserService, ProjectService, ConfigurationService) {
 	
-	var requestedPath = $location.path();
-	var baseUrl = $.cookie('baseUrl');
-	var apiKey = $.cookie('apiKey');
-	
-	/* Try login based on cookie */
-	if (baseUrl !== undefined && apiKey !== undefined) {
-		
-		ConfigurationService.setRestServiceBase(baseUrl);
-		ConfigurationService.setApiKey(apiKey);
-		
-		UserService.getCurrent()
-			.success(function(data) {
-				
-				$rootScope.user = data.user;
-				
-				ProjectService.getTopLevelProjects().then(function(projects) {
-					$rootScope.topLevelProjects = projects;
-				});
-			})
-			.error(function(data, status, headers, config) {
-				$location.path('/login');
-			});
-		
-	} else {
-		
-		$location.path('/login');
-	}
-	
+	/* Remember path that was originally requested so we can redirect there after login */
+	$rootScope.requestedPath = $location.path();
+	$location.path("/login");
 });
