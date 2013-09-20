@@ -2,25 +2,25 @@ var services = angular.module('LightmineApp.services', ['ngResource']);
 
 services.service('ConfigurationService', function($http) {
 
-	var _restServiceBase;
-	var _apiKey;
+	var _restServiceBase = undefined;
+	var _apiKey = undefined;
 	
 	this.getRestServiceBase = function() {
 		return _restServiceBase;
-	}
+	};
 	
 	this.setRestServiceBase = function(url) {
 		_restServiceBase = url;
-	}
+	};
 	
 	this.getApiKey = function() {
 		return _apiKey;
-	}
+	};
 	
 	this.setApiKey = function(apiKey) {
 		_apiKey = apiKey;
 		$http.defaults.headers.common['X-Redmine-API-Key'] = apiKey;
-	}
+	};
 });
 
 
@@ -30,7 +30,7 @@ services.service('UserService', function($http, $q, ConfigurationService) {
 	
 	this.getCurrent = function() {
 		return $http.get(ConfigurationService.getRestServiceBase() + "/users/current.json");
-	}
+	};
 	
 	this.getAllUsers = function() {
 		
@@ -112,19 +112,19 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 		return projectService.loadProjects().then(function(projects) {
 			return topLevelProjects;
 		});
-	}
+	};
 	
 	this.get = function(id) {
 		return projectService.loadProjects().then(function(projects) {
 			return projectMap[id];
 		});
-	}
+	};
 	
 	this.getVersions = function(id) {
 		return $http.get(ConfigurationService.getRestServiceBase() + "/projects/" + id + "/versions.json").then(function(response) {
 			return response.data.versions;
 		});
-	}
+	};
 	
 	this.getTrackers = function() {
 		
@@ -137,19 +137,19 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 		});
 		
 		return trackersPromise;
-	}
+	};
 	
 	//TODO: reload projects after delete
-	this.delete = function(id) {
-		return $http.delete(ConfigurationService.getRestServiceBase() + "/projects/" + id + ".json");
-	}
+	this['delete'] = function(id) {
+		return $http['delete'](ConfigurationService.getRestServiceBase() + "/projects/" + id + ".json");
+	};
 	
 	this.getAllProjects = function() {
 		
 		return projectService.loadProjects().then(function(projects) {
 			return allProjects;
 		});
-	}
+	};
 });
 
 
@@ -168,7 +168,7 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 			
 			return response.data;
 		});
-	}
+	};
 	
 	this.getIssueStatuses = function() {
 		
@@ -187,14 +187,13 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 		}
 		
 		return deferred.promise;
-	}
+	};
 	
 	this.getCategoriesByProject = function(projectId) {
 		return $http.get(ConfigurationService.getRestServiceBase() + '/projects/' + projectId + '/issue_categories.json').then(function(response) {
 			return response.data.issue_categories;
 		});
-	}
-	
+	};
 	
 	this.get = function(id) {
 		
@@ -214,12 +213,12 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 		}
 		
 		return deferred.promise;
-	}
+	};
 	
 	
-	this.delete = function(id, submission) {
+	this['delete'] = function(id, submission) {
 		
-		return $http.delete(ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json", submission).then(function(response) {
+		return $http['delete'](ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json", submission).then(function(response) {
 			delete issueIdMap[id];
 			console.log(response);
 		});

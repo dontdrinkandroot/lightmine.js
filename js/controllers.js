@@ -11,7 +11,7 @@ function LoginController($scope, $rootScope, $location, UserService, Configurati
 			$scope.submitting = false;
 			$location.path("/project");
 		});
-	}
+	};
 	
 	$scope.signIn = function() {
 		
@@ -31,8 +31,7 @@ function LoginController($scope, $rootScope, $location, UserService, Configurati
 				$scope.error = "Login failed with status " + status;
 				$scope.submitting = false;
 			});
-	}
-	
+	};
 }
 
 
@@ -70,27 +69,27 @@ function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $loc
 						'total' : data.total_count,
 						'limit' : data.limit
 					}
-				}
+				};
 			});
-	}
+	};
 	
 	$scope.deleteIssue = function(issue) {
 		
 		if ($window.confirm('Are you sure you wish to delete the issue?')) {
-			IssueService.delete(issue.id).then(function() {
+			IssueService['delete'](issue.id).then(function() {
 				$scope.loadIssues();
 			});
 		}
-	}
+	};
 	
-	$scope.delete = function(id) {
+	$scope['delete'] = function(id) {
 		
 		if ($window.confirm('Are you sure you wish to delete the project?')) {
-			ProjectService.delete(id).then(function() {
+			ProjectService['delete'](id).then(function() {
 				$location.path("/project");
 			});
 		}
-	}
+	};
 	
 	$scope.loadIssues();
 }
@@ -118,27 +117,27 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 	
 	$scope.setAssignedTo = function(user) {
 		$scope.issue.assigned_to = user;
-	}
+	};
 	
 	$scope.setStatus = function(status) {
 		$scope.issue.status = status;
-	}
+	};
 	
 	$scope.setCategory = function(category) {
 		$scope.issue.category = category;
-	}
+	};
 	
 	$scope.setProject = function(project) {
 		$scope.issue.project = project;
-	}
+	};
 	
 	$scope.setVersion = function(version) {
 		$scope.issue.fixed_version = version;
-	}
+	};
 	
 	$scope.setTracker = function(tracker) {
 		$scope.issue.tracker = tracker;
-	}
+	};
 	
 	$scope.$watch("issue.project", function() {
 		
@@ -230,7 +229,7 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 		}
 		
 		return submission;
-	}
+	};
 }
 
 
@@ -257,7 +256,7 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
 					$scope.submitting = false;
 				}
 			);
-	}
+	};
 	
 	$injector.invoke(IssueFormController, this, {
 		$scope: $scope,
@@ -290,7 +289,7 @@ function IssueEditController($injector, $scope, ProjectService, IssueService, Us
 				$scope.submitting = false;
 			}
 		);
-	}
+	};
 	
 	$injector.invoke(IssueFormController, this, {
 		$scope: $scope,

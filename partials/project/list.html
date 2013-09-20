@@ -11,7 +11,12 @@
 			<div class="col-sm-6">{{project.description}}</div>
 			<div class="col-sm-6">
 				<ul class="margin-bottom-none">
-					<li ng-repeat="subProject in project.children"><a href="#!/project/{{subProject.id}}">{{subProject.name}}</a></li>
+					<li ng-repeat="subProject in project.children"><a href="#!/project/{{subProject.id}}">{{subProject.name}}</a>
+						<ul class="margin-bottom-none">
+							<li ng-repeat="subSubProject in subProject.children"><a href="#!/project/{{subSubProject.id}}">{{subSubProject.name}}</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>
