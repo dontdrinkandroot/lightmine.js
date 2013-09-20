@@ -1,23 +1,23 @@
 function LoginController($scope, $rootScope, $location, UserService, ConfigurationService, UserService, ProjectService) {
 	
 	$scope.submitting = false;
-	
+
 	var login = function(baseUrl, apiKey) {
-		
+
 		delete $scope.error;
 		$scope.submitting = true;
-		
+
 		ConfigurationService.setRestServiceBase(baseUrl);
 		ConfigurationService.setApiKey(apiKey);
-		
+
 		UserService.getCurrent()
 			.success(function(data) {
-				
+
 				$rootScope.user = data.user;
-				
+
 				ProjectService.getTopLevelProjects().then(
 					function(projects) {
-						
+
 						$rootScope.topLevelProjects = projects;
 						$scope.submitting = false;
 
@@ -27,9 +27,9 @@ function LoginController($scope, $rootScope, $location, UserService, Configurati
 						} else {
 							$location.path("/");
 						}
-						
+
 					}, function(response) {
-						
+
 						$scope.error = "Getting toplevel projects failed";
 						console.lerror(response);
 						$scope.submitting = false;
@@ -128,6 +128,10 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 	IssueService.getIssueStatuses().then(function(statuses) {
 		$scope.statuses = statuses;
 	});
+
+    IssueService.getPriorities().then(function(priorities) {
+       $scope.priorities = priorities;
+    });
 	
 	ProjectService.getTrackers().then(function(trackers) {
 		$scope.trackers = trackers;
@@ -160,6 +164,10 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 	$scope.setTracker = function(tracker) {
 		$scope.issue.tracker = tracker;
 	};
+
+    $scope.setPriority = function(priority) {
+        $scope.issue.priority = priority;
+    }
 	
 	$scope.$watch("issue.project", function() {
 		
@@ -190,20 +198,16 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 		var submission = {};
 		submission.issue = {};
 		
-		if ($scope.issue.project && angular.isDefined($scope.issue.project.id)) {
+		if (angular.isDefined($scope.issue.project) && angular.isDefined($scope.issue.project.id)) {
 			submission.issue.project_id = $scope.issue.project.id;
 		}
 		
-		if ($scope.issue.tracker && angular.isDefined($scope.issue.tracker.id)) {
+		if (angular.isDefined($scope.issue.tracker) && angular.isDefined($scope.issue.tracker.id)) {
 			submission.issue.tracker_id = $scope.issue.tracker.id;
 		}
 		
-		if ($scope.issue.status && angular.isDefined($scope.issue.status.id)) {
+		if (angular.isDefined($scope.issue.status) && angular.isDefined($scope.issue.status.id)) {
 			submission.issue.status_id = $scope.issue.status.id;
-		}
-		
-		if ($scope.issue.priority && angular.isDefined($scope.issue.priority.id)) {
-			submission.issue.priority_id = $scope.issue.priority.id;
 		}
 		
 		if (angular.isDefined($scope.issue.subject)) {
@@ -214,19 +218,13 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 			submission.issue.description = $scope.issue.description;
 		}
 		
-		if ($scope.issue.category && angular.isDefined($scope.issue.category.id)) {
-			submission.issue.category_id = $scope.issue.category.id;
-		} else {
-			submission.issue.category_id = null;
-		}
-		
-		if ($scope.issue.assigned_to && angular.isDefined($scope.issue.assigned_to.id)) {
+		if (angular.isDefined($scope.issue.assigned_to) && angular.isDefined($scope.issue.assigned_to.id)) {
 			submission.issue.assigned_to_id = $scope.issue.assigned_to.id;
 		} else {
 			submission.issue.assigned_to_id = null;
 		}
 		
-		if ($scope.issue.parent_issue && angular.isDefined($scope.issue.parent_issue.id)) {
+		if (angular.isDefined($scope.issue.parent_issue) && angular.isDefined($scope.issue.parent_issue.id)) {
 			submission.issue.parent_issue_id = $scope.issue.parent_issue.id;
 		} else {
 			submission.issue.parent_issue_id = null;
@@ -246,10 +244,12 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 		
 		if (angular.isDefined($scope.issue.tracker) && angular.isDefined($scope.issue.tracker.id)) {
 			submission.issue.tracker_id = $scope.issue.tracker.id;
-		} else {
-			submission.issue.tracker_id = null;
 		}
-		
+
+        if (angular.isDefined($scope.issue.priority) && angular.isDefined($scope.issue.priority.id)) {
+            submission.issue.priority_id = $scope.issue.priority.id;
+        }
+
 		return submission;
 	};
 }

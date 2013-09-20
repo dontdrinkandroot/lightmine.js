@@ -57,6 +57,20 @@
 			</div>
 		</div>
 	</div>
+
+    <div class="form-group">
+        <label for="priority" class="col-lg-2 control-label">Priority</label>
+        <div class="col-lg-10">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="priority">
+                    {{issue.priority.name}} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="priority in priorities"><a class="link" ng-click="setPriority(priority)">{{priority.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 	
 	<div class="form-group">
 		<label for="assignedto" class="col-lg-2 control-label">Assigned To</label>

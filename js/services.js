@@ -165,7 +165,7 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 				var issue = response.data.issues[i];
 				issueIdMap[issue.id] = issue;
 			}
-			
+
 			return response.data;
 		});
 	};
@@ -179,15 +179,48 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 			deferred.resolve(issueStatuses);
 			
 		} else {
-			
+
 			$http.get(ConfigurationService.getRestServiceBase() + "/issue_statuses.json").then(function(response) {
 				issueStatuses = response.data.issue_statuses;
-				deferred.resolve(issueStatuses);	
+				deferred.resolve(issueStatuses);
 			});
 		}
-		
+
 		return deferred.promise;
 	};
+
+    this.getPriorities = function() {
+
+      // TODO: Newer versions of redmine have a method to get the priority enumeration. If we are able to detect the
+      // version we should use that method and use the hardcoded priorities as fallback.
+
+        var deferred = $q.defer();
+        deferred.resolve([
+            {
+                "id":3,
+                "name":"Low"
+            },
+            {
+                "id":4,
+                "name":"Normal"
+            },
+            {
+                "id":5,
+                "name":"High"
+            },
+            {
+                "id":6,
+                "name":"Urgent"
+            },
+            {
+                "id":7,
+                "name":"Immediate"
+            }
+        ]);
+
+        return deferred.promise;
+
+    };
 	
 	this.getCategoriesByProject = function(projectId) {
 		return $http.get(ConfigurationService.getRestServiceBase() + '/projects/' + projectId + '/issue_categories.json').then(function(response) {
