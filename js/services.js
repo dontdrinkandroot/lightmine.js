@@ -158,8 +158,9 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 	var issueIdMap = {};
 	var issueStatuses = undefined;
 	
-	this.getAllByProject = function(projectId) {
-		return $http.get(ConfigurationService.getRestServiceBase() + "/issues.json?project_id=" + projectId).then(function(response) {
+	this.find = function(config) {
+
+		return $http.get(ConfigurationService.getRestServiceBase() + "/issues.json", config).then(function(response) {
 			
 			for (var i = 0; i < response.data.issues.length; i++) {
 				var issue = response.data.issues[i];
@@ -219,7 +220,6 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
         ]);
 
         return deferred.promise;
-
     };
 	
 	this.getCategoriesByProject = function(projectId) {

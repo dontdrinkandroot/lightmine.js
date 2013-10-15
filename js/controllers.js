@@ -82,7 +82,14 @@ function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $loc
 	$scope.loadIssues = function() {
 	
 		delete $scope.issues;
-		IssueService.getAllByProject($routeParams.id)
+
+        var config  = {
+            params : {
+                project_id : $routeParams.id
+            }
+        }
+
+		IssueService.find(config)
 			.then(function(data) {
 				$scope.issues = {
 					'entries' : data.issues,
@@ -114,6 +121,34 @@ function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $loc
 	};
 	
 	$scope.loadIssues();
+}
+
+function UserIssuesController($scope, IssueService) {
+
+    $scope.loadIssues = function() {
+
+        delete $scope.issues;
+
+        var config  = {
+            params : {
+                assigned_to : $scope.user.id
+            }
+        }
+
+        IssueService.find(config)
+            .then(function(data) {
+                $scope.issues = {
+                    'entries' : data.issues,
+                    'pagination' : {
+                        'offset' : data.offset,
+                        'total' : data.total_count,
+                        'limit' : data.limit
+                    }
+                };
+            });
+    };
+
+    $scope.loadIssues();
 }
 
 

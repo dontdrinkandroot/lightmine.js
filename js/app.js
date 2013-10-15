@@ -38,6 +38,11 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
 		templateUrl : 'partials/issue/create.html',
 		controller : IssueCreateController
 	});
+
+    $routeProvider.when('/user/issues', {
+       templateUrl : 'partials/user/issues.html',
+        controller : UserIssuesController
+    });
 	
 	$routeProvider.otherwise({
 		redirectTo : 'project'
