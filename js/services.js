@@ -154,25 +154,17 @@ services.service('ProjectService', function($http, $q, ConfigurationService) {
 
 
 services.service('IssueService', function($http, $q, ConfigurationService) {
-	
-	var issueIdMap = {};
+
+    var issuesUrl = ConfigurationService.getRestServiceBase() + "/issues";
 	var issueStatuses = undefined;
 	
 	this.find = function(config) {
-
-		return $http.get(ConfigurationService.getRestServiceBase() + "/issues.json", config).then(function(response) {
-			
-			for (var i = 0; i < response.data.issues.length; i++) {
-				var issue = response.data.issues[i];
-				issueIdMap[issue.id] = issue;
-			}
-
+		return $http.get(issuesUrl + ".json", config).then(function(response) {
 			return response.data;
 		});
 	};
 	
 	this.getIssueStatuses = function() {
-		
 		var deferred = $q.defer();
 		
 		if (issueStatuses !== undefined) {
@@ -197,26 +189,11 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 
         var deferred = $q.defer();
         deferred.resolve([
-            {
-                "id":3,
-                "name":"Low"
-            },
-            {
-                "id":4,
-                "name":"Normal"
-            },
-            {
-                "id":5,
-                "name":"High"
-            },
-            {
-                "id":6,
-                "name":"Urgent"
-            },
-            {
-                "id":7,
-                "name":"Immediate"
-            }
+            { "id":3, "name":"Low" },
+            { "id":4, "name":"Normal" },
+            { "id":5, "name":"High" },
+            { "id":6, "name":"Urgent" },
+            { "id":7, "name":"Immediate" }
         ]);
 
         return deferred.promise;
@@ -227,53 +204,28 @@ services.service('IssueService', function($http, $q, ConfigurationService) {
 			return response.data.issue_categories;
 		});
 	};
-	
-	this.get = function(id) {
-		
-		var deferred = $q.defer();
-		
-		if (issueIdMap[id] !== undefined) {
-			
-			deferred.resolve(issueIdMap[id]);
-			
-		} else {
-			
-			$http.get(ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json").then(function(response) {
-				var issue = response.data.issue;
-				issueIdMap[issue.id] = issue;
-				deferred.resolve(issue);
-			});
-		}
-		
-		return deferred.promise;
-	};
+
+    this.get = function (id) {
+        return $http.get(issuesUrl + "/" + id + ".json").then(function (response) {
+            return response.data.issue;
+        });
+    };
 	
 	
 	this['delete'] = function(id, submission) {
-		
-		return $http['delete'](ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json", submission).then(function(response) {
-			delete issueIdMap[id];
-			console.log(response);
+		return $http['delete'](issuesUrl + "/" + id + ".json", submission).then(function(response) {
 		});
-		
 	};
-	
-	
+
 	this.update = function(id, submission) {
-		
-		return $http.put(ConfigurationService.getRestServiceBase() + "/issues/" + id + ".json", submission).then(function(response) {
-			delete issueIdMap[id];
+		return $http.put(issuesUrl + "/" + id + ".json", submission).then(function(response) {
 			return response;
 		});
-		
 	};
 	
 	this.create = function(submission) {
-		
-		return $http.post(ConfigurationService.getRestServiceBase() + "/issues.json", submission).then(function(response) {
-			issueIdMap[response.data.issue.id] = response.data.issue;
+		return $http.post(issuesUrl + ".json", submission).then(function(response) {
 			return response.data.issue;
 		});
-		
 	};
 });
