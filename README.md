@@ -37,4 +37,4 @@ If this doesn't work, try the solution suggested [here](http://stackoverflow.com
 
 ### Redmine >= 2.0
 
-There is a plugin available [here](http://www.redmine.org/plugins/redmine_cors), that is supposed to address the issue. However I have not tested if the plugin is working. Any feedback is welcome.
+There is a plugin available [here](http://www.redmine.org/plugins/redmine_cors) ([GitHub](https://github.com/mavimo/redmine_cors)) that provides the headers as needed.
