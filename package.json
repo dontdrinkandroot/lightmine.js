@@ -1,0 +1,10 @@
+{
+  "name": "lightminejs",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.6.3",
+    "load-grunt-tasks": "~0.2.1",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}

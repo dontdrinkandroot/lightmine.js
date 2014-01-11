@@ -1,24 +1,23 @@
 <div class="page-header">
-	<h1>Projects</h1>
+  <h1>Projects</h1>
 </div>
 
 <div class="panel panel-default" ng-repeat="project in topLevelProjects">
-	<div class="panel-heading">
-		<h2 class="panel-title"><a href="#!/project/{{project.id}}">{{project.name}}</a></h2>
-	</div>
-	<div class="panel-body">
-		<div class="row">
-			<div class="col-sm-6">{{project.description}}</div>
-			<div class="col-sm-6">
-				<ul class="margin-bottom-none">
-					<li ng-repeat="subProject in project.children"><a href="#!/project/{{subProject.id}}">{{subProject.name}}</a>
-						<ul class="margin-bottom-none">
-							<li ng-repeat="subSubProject in subProject.children"><a href="#!/project/{{subSubProject.id}}">{{subSubProject.name}}</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+  <div class="panel-heading">
+    <h2 class="panel-title"><a href="#!/project/{{project.id}}">{{project.name}}</a></h2>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-6">{{project.description}}</div>
+      <div class="col-sm-6">
+        <ul class="margin-bottom-none">
+          <li ng-repeat="subProject in project.children"><a href="#!/project/{{subProject.id}}">{{subProject.name}}</a>
+            <ul class="margin-bottom-none">
+              <li ng-repeat="subSubProject in subProject.children"><a href="#!/project/{{subSubProject.id}}">{{subSubProject.name}}</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
