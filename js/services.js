@@ -177,19 +177,9 @@ services.service('IssueService', function ($http, $q, ConfigurationService) {
   };
 
   this.getPriorities = function () {
-    // TODO: Newer versions of redmine have a method to get the priority enumeration. If we are able to detect the
-    // version we should use that method and use the hardcoded priorities as fallback.
-
-    var deferred = $q.defer();
-    deferred.resolve([
-      {"id": 3, "name": "Low"},
-      {"id": 4, "name": "Normal"},
-      {"id": 5, "name": "High"},
-      {"id": 6, "name": "Urgent"},
-      {"id": 7, "name": "Immediate"}
-    ]);
-
-    return deferred.promise;
+    return $http.get(ConfigurationService.getRestServiceBase() + '/numerations/issue_priorities.json').then(function (response) {
+      return response.data.issue_priorities;
+    });
   };
 
   this.getCategoriesByProject = function (projectId) {
