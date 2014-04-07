@@ -1,9 +1,11 @@
 lightmine.js
 ============
 
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=shoxrocks&url=https://github.com/dontdrinkandroot/lightmine.js&title=Lightmine.js&language=&tags=github&category=software)
-
 AngularJS based Redmine REST API Client with a Responsive Interface.
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=shoxrocks&url=http://www.dontdrinkandroot.net/github/lightmine.js&title=AngularJS%20based%20Redmine%20REST%20API%20Client%20with%20a%20Responsive%20Interface&language=&tags=github&category=software)
+
+[![Donate](http://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W9NAXW8YAZ4D6&item_name=lightmine.js%20Donation&currency_code=EUR) 
 
 Prerequisites
 -----
