@@ -1,0 +1,18 @@
+{
+    "name": "lightmine.js",
+    "version": "0.1.0",
+    "directory": "lib",
+    "ignore": [
+    ],
+    "dependencies": {
+        "jquery": "2.1.1",
+        "jquery.cookie": "1.4.1",
+        "angular": "1.2.17",
+        "angular-resource": "1.2.17",
+        "angular-route": "1.2.17",
+        "bootstrap": "3.1.1",
+        "less.js": "1.7.1"
+    },
+    "devDependencies": {
+    }
+}
