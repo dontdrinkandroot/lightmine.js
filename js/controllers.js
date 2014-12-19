@@ -87,7 +87,7 @@ function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $loc
             params : {
                 project_id : $routeParams.id
             }
-        }
+        };
 
 		IssueService.find(config)
 			.then(function(data) {
@@ -133,7 +133,7 @@ function UserIssuesController($scope, IssueService) {
             params : {
                 assigned_to : $scope.user.id
             }
-        }
+        };
 
         IssueService.find(config)
             .then(function(data) {
