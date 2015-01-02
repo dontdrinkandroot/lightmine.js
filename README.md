@@ -15,7 +15,7 @@ Prerequisites
 CORS
 -----
 
-Redmine does not support proper handling of cross origin resource sharing ([CORS](http://www.w3.org/TR/cors/)). Therefore requests against the Redmine REST API with modern web browsers will usually fail.
+Redmine does not support proper handling of cross origin resource sharing ([CORS](http://www.w3.org/TR/cors/)). Therefore requests against the Redmine REST API with modern web browsers will usually fail. Please also keep in mind that connecting to a ssl url with a self signed certificated might be rejected by the browser.
 
 ### Redmine < 2.0
 
@@ -35,7 +35,7 @@ Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
 Header always set Access-Control-Allow-Headers "origin, content-type, accept, authorization, x-requested-with, x-redmine-api-key"
 ```
 
-If this doesn't work, try the solution suggested [here](http://stackoverflow.com/questions/12194371/how-to-add-response-header-in-vhost-or-passeneger-ruby).
+If that doesn't work, try the solution suggested [here](http://stackoverflow.com/questions/12194371/how-to-add-response-header-in-vhost-or-passeneger-ruby).
 
 ### Redmine >= 2.0
 

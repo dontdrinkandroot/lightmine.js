@@ -31,8 +31,8 @@ function LoginController($scope, $rootScope, $location, UserService, Configurati
 					}, function(response) {
 
 						$scope.error = "Getting toplevel projects failed";
-						console.lerror(response);
-						$scope.submitting = false;
+                        console.error(response);
+                        $scope.submitting = false;
 					}
 				);
 			})
@@ -110,10 +110,10 @@ function ProjectIssuesController($scope, $rootScope, $window, $routeParams, $loc
 			});
 		}
 	};
-	
-	$scope['delete'] = function(id) {
-		
-		if ($window.confirm('Are you sure you wish to delete the project?')) {
+
+    $scope.deleteProject = function (id) {
+
+        if ($window.confirm('Are you sure you wish to delete the project?')) {
 			ProjectService['delete'](id).then(function() {
 				$location.path("/project");
 			});
@@ -202,9 +202,9 @@ function IssueFormController($scope, ProjectService, IssueService, UserService) 
 
     $scope.setPriority = function(priority) {
         $scope.issue.priority = priority;
-    }
-	
-	$scope.$watch("issue.project", function() {
+    };
+
+    $scope.$watch("issue.project", function() {
 		
 		if (angular.isDefined($scope.issue) && angular.isDefined($scope.issue.project)) {
 			

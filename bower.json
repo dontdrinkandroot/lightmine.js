@@ -12,7 +12,8 @@
         "angular-resource": "1.2.x",
         "angular-route": "1.2.x",
         "bootstrap": "3.1.x",
-        "less.js": "1.7.x"
+        "less.js": "1.7.x",
+        "restangular": "1.4.x"
     },
     "devDependencies": {
     }
