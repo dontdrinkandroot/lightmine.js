@@ -69,6 +69,17 @@ angular.module('LightmineApp', [ 'LightmineApp.controllers', 'LightmineApp.filte
             return data;
         });
         Restangular.addRequestInterceptor(function (element, operation, what, url) {
+            if (what === "issues") {
+                if (operation === "put") {
+                    return {
+                        'issue': element
+                    }
+                } else if (operation == "post") {
+                    return {
+                        'issue': element
+                    }
+                }
+            }
             console.log("Unmodified Request", element, operation, what, url);
             return element;
         });

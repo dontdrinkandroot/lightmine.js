@@ -233,69 +233,66 @@ function IssueFormController($scope, ProjectService, IssueService, TrackerServic
         }
     });
 
-    $scope.buildSubmission = function () {
-
-        var submission = {};
-        submission.issue = {};
+    $scope.buildSubmission = function (issue) {
 
         if (angular.isDefined($scope.issue.project) && angular.isDefined($scope.issue.project.id)) {
-            submission.issue.project_id = $scope.issue.project.id;
+            issue.project_id = $scope.issue.project.id;
         }
 
         if (angular.isDefined($scope.issue.tracker) && angular.isDefined($scope.issue.tracker.id)) {
-            submission.issue.tracker_id = $scope.issue.tracker.id;
+            issue.tracker_id = $scope.issue.tracker.id;
         }
 
         if (angular.isDefined($scope.issue.status) && angular.isDefined($scope.issue.status.id)) {
-            submission.issue.status_id = $scope.issue.status.id;
+            issue.status_id = $scope.issue.status.id;
         }
 
         if (angular.isDefined($scope.issue.subject)) {
-            submission.issue.subject = $scope.issue.subject;
+            issue.subject = $scope.issue.subject;
         }
 
         if (angular.isDefined($scope.issue.description)) {
-            submission.issue.description = $scope.issue.description;
+            issue.description = $scope.issue.description;
         }
 
         if (angular.isDefined($scope.issue.assigned_to) && angular.isDefined($scope.issue.assigned_to.id)) {
-            submission.issue.assigned_to_id = $scope.issue.assigned_to.id;
+            issue.assigned_to_id = $scope.issue.assigned_to.id;
         } else {
-            submission.issue.assigned_to_id = null;
+            issue.assigned_to_id = null;
         }
 
         if (angular.isDefined($scope.issue.parent_issue) && angular.isDefined($scope.issue.parent_issue.id)) {
-            submission.issue.parent_issue_id = $scope.issue.parent_issue.id;
+            issue.parent_issue_id = $scope.issue.parent_issue.id;
         } else {
-            submission.issue.parent_issue_id = null;
+            issue.parent_issue_id = null;
         }
 
         if (angular.isDefined($scope.issue.category) && angular.isDefined($scope.issue.category.id)) {
-            submission.issue.category_id = $scope.issue.category.id;
+            issue.category_id = $scope.issue.category.id;
         } else {
-            submission.issue.category_id = null;
+            issue.category_id = null;
         }
 
         if (angular.isDefined($scope.issue.fixed_version) && angular.isDefined($scope.issue.fixed_version.id)) {
-            submission.issue.fixed_version_id = $scope.issue.fixed_version.id;
+            issue.fixed_version_id = $scope.issue.fixed_version.id;
         } else {
-            submission.issue.fixed_version_id = null;
+            issue.fixed_version_id = null;
         }
 
         if (angular.isDefined($scope.issue.tracker) && angular.isDefined($scope.issue.tracker.id)) {
-            submission.issue.tracker_id = $scope.issue.tracker.id;
+            issue.tracker_id = $scope.issue.tracker.id;
         }
 
         if (angular.isDefined($scope.issue.priority) && angular.isDefined($scope.issue.priority.id)) {
-            submission.issue.priority_id = $scope.issue.priority.id;
+            issue.priority_id = $scope.issue.priority.id;
         }
 
-        return submission;
+        return issue;
     };
 }
 
 
-function IssueCreateController($injector, $scope, ProjectService, IssueService, TrackerService, UserService, $routeParams, $location, $rootScope) {
+function IssueCreateController($injector, $scope, ProjectService, IssueService, TrackerService, UserService, Restangular, $routeParams, $location, $rootScope) {
 
     $scope.issue = {};
 
@@ -342,7 +339,8 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
 
         $scope.submitting = true;
         delete $scope.errors;
-        IssueService.create($scope.buildSubmission()).then(
+        var submission = $scope.buildSubmission({});
+        Restangular.all('issues').post(submission).then(
             function () {
                 $scope.submitting = false;
                 $location.path("project/" + $scope.issue.project.id);
@@ -358,13 +356,14 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
         $scope: $scope,
         ProjectService: ProjectService,
         IssueService: IssueService,
+        TrackerService: TrackerService,
         UserService: UserService
     });
 }
 IssueCreateController.prototype = Object.create(IssueFormController.prototype);
 
 
-function IssueEditController($injector, $scope, ProjectService, TrackerService, IssueService, UserService, $routeParams, $location, $rootScope) {
+function IssueEditController($injector, $scope, ProjectService, TrackerService, IssueService, UserService, Restangular, $routeParams, $location, $rootScope) {
 
     IssueService.get($routeParams.id).then(function (issue) {
         $scope.issue = issue;
@@ -375,14 +374,16 @@ function IssueEditController($injector, $scope, ProjectService, TrackerService, 
 
         $scope.submitting = true;
         delete $scope.errors;
-        IssueService.update($routeParams.id, $scope.buildSubmission()).then(
-            function () {
+
+        var submission = $scope.buildSubmission({});
+        Restangular.one('issues', $scope.issue.id).customPUT(submission).then(
+            function (response) {
                 $scope.submitting = false;
                 $location.path("project/" + $scope.issue.project.id);
             },
             function (response) {
-                $scope.errors = response.data.errors;
                 $scope.submitting = false;
+                $scope.errors = response.data.errors;
             }
         );
     };
@@ -391,6 +392,7 @@ function IssueEditController($injector, $scope, ProjectService, TrackerService, 
         $scope: $scope,
         ProjectService: ProjectService,
         IssueService: IssueService,
+        TrackerService: TrackerService,
         UserService: UserService
     });
 }

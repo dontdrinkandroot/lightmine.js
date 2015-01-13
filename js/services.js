@@ -240,12 +240,6 @@ services.service('IssueService', function ($http, $q, ConfigurationService, Rest
         });
     };
 
-    this.update = function (id, submission) {
-        return $http.put(issuesUrl + "/" + id + ".json", submission).then(function (response) {
-            return response;
-        });
-    };
-
     this.create = function (submission) {
         return $http.post(issuesUrl + ".json", submission).then(function (response) {
             return response.data.issue;
