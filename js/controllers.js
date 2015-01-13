@@ -374,7 +374,7 @@ function IssueEditController($injector, $scope, ProjectService, TrackerService, 
     var originalIssue;
 
     IssueService.get($routeParams.id).then(function (issue) {
-        originalIssue = angular.copy(issue);
+        originalIssue = Restangular.copy(issue);
         $scope.issue = issue;
         $rootScope.project = $scope.issue.project;
     });
@@ -385,7 +385,6 @@ function IssueEditController($injector, $scope, ProjectService, TrackerService, 
         delete $scope.errors;
 
         var submission = $scope.buildSubmission(originalIssue);
-        console.log('Submission', originalIssue, $scope.issue, submission);
         Restangular.one('issues', $scope.issue.id).customPUT(submission).then(
             function (response) {
                 $scope.submitting = false;

@@ -1,12 +1,12 @@
 <div class="btn-group pull-right">
     <a class="btn btn-default" title="Create Issue" href="#!/issue/create?project_id={{project.id}}">
-        <i class="glyphicon glyphicon-plus"></i>
+        <i class="fa fa-plus"></i>
     </a>
     <a class="btn btn-default" title="Edit Project" href="#!/project/{{project.id}}/edit">
-        <i class="glyphicon glyphicon-pencil"></i>
+        <i class="fa fa-edit"></i>
     </a>
     <button type="button" class="btn btn-default" title="Delete Project">
-        <i class="glyphicon glyphicon-trash link" ng-click="deleteProject(project.id)"></i>
+        <i class="fa fa-trash link" ng-click="deleteProject(project.id)"></i>
     </button>
 </div>
 
@@ -21,17 +21,17 @@
     <div class="panel-heading">
         <div class="dropdown pull-right">
             <a class="link" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="glyphicon glyphicon-cog"></i>
+                <i class="fa fa-cog"></i>
             </a>
             <ul class="dropdown-menu" role="menu">
                 <li>
                     <a href="#!/issue/{{issue.id}}/edit">
-                        <i class="glyphicon glyphicon-pencil"></i>&nbsp;&nbsp;Edit
+                        <i class="fa fa-edit"></i>&nbsp;&nbsp;Edit
                     </a>
                 </li>
                 <li>
                     <a class="link" ng-click="deleteIssue(issue)">
-                        <i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;Delete
+                        <i class="fa fa-trash-o"></i>&nbsp;&nbsp;Delete
                     </a>
                 </li>
             </ul>
@@ -45,7 +45,7 @@
             <div class="col-sm-6 col-md-4 col-lg-3">Tracker: <span
                     class="label label-default">{{issue.tracker.name}}</span></div>
             <div class="col-sm-6 col-md-4 col-lg-3">Status: {{issue.status.name}}</div>
-            <div class="col-sm-6 col-md-4 col-lg-3">Priority: {{issue.priority.name}}</div>
+            <div class="col-sm-6 col-md-4 col-lg-3">Priority: <span lm-priority="issue.priority"></span></div>
             <div class="col-sm-6 col-md-4 col-lg-3">Assigned to: {{issue.assigned_to.name}}</div>
             <div class="col-sm-6 col-md-4 col-lg-3">Version: {{issue.fixed_version.name}}</div>
             <div class="col-sm-6 col-md-4 col-lg-3">Category: {{issue.category.name}}</div>
