@@ -53,6 +53,22 @@ angular.module('LightmineApp', [ 'LightmineApp.controllers', 'LightmineApp.filte
 
     .run(function ($rootScope, $location, Restangular) {
 
+        $rootScope.errors = [];
+
+        $rootScope.clearErrors = function (error) {
+            $rootScope.errors = [];
+        };
+
+        $rootScope.addError = function (error) {
+            $rootScope.errors.push(error);
+        };
+
+        $rootScope.$on("$routeChangeStart", function (event, next, current) {
+            $rootScope.clearErrors();
+            $('.navbar-collapse').collapse('hide');
+        });
+
+
         Restangular.setRequestSuffix('.json');
 
         /* Redmine does wrap the responses, so we need to extract them in oder to "restangularize" */

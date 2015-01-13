@@ -1,24 +1,24 @@
 var directives = angular.module('LightmineApp.directives', []);
 
-directives.directive('spinner', function() {
-	return {
-		scope: {
+directives.directive('spinner', function () {
+    return {
+        scope: {
             scopeVar: "=spinner"
         },
-		restrict: 'A',
-		replace: false,
-		template: '<img src="images/spinner.gif" />',
-		link: function($scope, elm, attrs) {
-			
-			$scope.$watch("scopeVar", function() {
-				if ($scope.scopeVar !== undefined) {
-					elm.hide();
-				} else {
-					elm.show();
-				}
-			});
-		}
-	};
+        restrict: 'A',
+        replace: false,
+        template: '<img src="images/spinner.gif" />',
+        link: function ($scope, elm, attrs) {
+
+            $scope.$watch("scopeVar", function () {
+                if ($scope.scopeVar !== undefined) {
+                    elm.hide();
+                } else {
+                    elm.show();
+                }
+            });
+        }
+    };
 });
 
 directives.directive('lmPriority', function () {
@@ -30,7 +30,6 @@ directives.directive('lmPriority', function () {
         link: function ($scope, $elm, $attrs) {
 
             $scope.$watch("priority", function () {
-                console.log($scope.priority);
                 var icon = '';
                 var color = 'inherit';
                 switch ($scope.priority.name) {
@@ -39,7 +38,7 @@ directives.directive('lmPriority', function () {
                         icon = '<span class="fa fa-fw fa-arrow-down"></span>';
                         break;
                     case 'Normal':
-                        icon = '<span class="fa fa-border fa-fw fa-circle-thin"></span>';
+                        icon = '<span class="fa fa-fw fa-circle-thin"></span>';
                         break;
                     case 'High':
                         color = '#ff8040';

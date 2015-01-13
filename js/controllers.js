@@ -32,14 +32,14 @@ function LoginController($scope, $rootScope, $location, UserService, Configurati
 
                     }, function (response) {
 
-                        $scope.error = "Getting toplevel projects failed";
+                        $scope.addError("Getting toplevel projects failed");
                         console.error(response);
                         $scope.submitting = false;
                     }
                 );
             })
             .error(function (data, status, headers, config) {
-                $scope.error = "Login failed with status " + status;
+                $scope.addError("Login failed with status " + status);
                 $scope.submitting = false;
             });
     };
@@ -344,7 +344,7 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
     $scope.submit = function () {
 
         $scope.submitting = true;
-        delete $scope.errors;
+        delete $scope.clearErrors;
         var submission = $scope.buildSubmission();
         Restangular.all('issues').post(submission).then(
             function () {
@@ -352,7 +352,7 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
                 $location.path("project/" + $scope.issue.project.id);
             },
             function (response) {
-                $scope.errors = response.data.errors;
+                $scope.addError(response.data.errors);
                 $scope.submitting = false;
             }
         );
@@ -382,7 +382,7 @@ function IssueEditController($injector, $scope, ProjectService, TrackerService, 
     $scope.submit = function () {
 
         $scope.submitting = true;
-        delete $scope.errors;
+        $scope.clearErrors();
 
         var submission = $scope.buildSubmission(originalIssue);
         Restangular.one('issues', $scope.issue.id).customPUT(submission).then(
@@ -392,7 +392,7 @@ function IssueEditController($injector, $scope, ProjectService, TrackerService, 
             },
             function (response) {
                 $scope.submitting = false;
-                $scope.errors = response.data.errors;
+                $scope.addError(response.data.errors);
             }
         );
     };

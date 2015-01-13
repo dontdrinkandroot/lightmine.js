@@ -25,12 +25,13 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li ng-repeat="project in topLevelProjects"><a href="#!/project/{{project.id}}" onclick="$('.navbar-collapse').collapse('hide')">{{project.name}}</a>
-								<ul>
-									<li ng-repeat="project in project.children"><a href="#!/project/{{project.id}}" onclick="$('.navbar-collapse').collapse('hide')">{{project.name}}</a>
-										<ul>
-											<li ng-repeat="project in project.children"><a href="#!/project/{{project.id}}" onclick="$('.navbar-collapse').collapse('hide')">{{project.name}}</a></li>
-										</ul>
+                            <li ng-repeat="project in topLevelProjects"><a href="#!/project/{{project.id}}">{{project.name}}</a>
+                                <ul>
+                                    <li ng-repeat="project in project.children"><a href="#!/project/{{project.id}}">{{project.name}}</a>
+                                        <ul>
+                                            <li ng-repeat="project in project.children"><a
+                                                    href="#!/project/{{project.id}}">{{project.name}}</a></li>
+                                        </ul>
 									</li>
 								</ul>
 							</li>
@@ -53,7 +54,10 @@
 	</header>
 
 	<div class="container">
-		<div class="ng-view">
+
+        <div ng-repeat="error in errors" class="alert alert-danger" role="alert"></div>
+        {{error}}
+        <div class="ng-view">
 		</div>
 	</div>
 
