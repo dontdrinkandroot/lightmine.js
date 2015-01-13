@@ -233,7 +233,9 @@ function IssueFormController($scope, ProjectService, IssueService, TrackerServic
         }
     });
 
-    $scope.buildSubmission = function (issue) {
+    $scope.buildSubmission = function (existingIssue) {
+
+        var issue = {};
 
         if (angular.isDefined($scope.issue.project) && angular.isDefined($scope.issue.project.id)) {
             issue.project_id = $scope.issue.project.id;
@@ -247,11 +249,11 @@ function IssueFormController($scope, ProjectService, IssueService, TrackerServic
             issue.status_id = $scope.issue.status.id;
         }
 
-        if (angular.isDefined($scope.issue.subject)) {
+        if (angular.isDefined($scope.issue.subject) && $scope.issue.subject !== existingIssue.subject) {
             issue.subject = $scope.issue.subject;
         }
 
-        if (angular.isDefined($scope.issue.description)) {
+        if (angular.isDefined($scope.issue.description) && $scope.issue.description !== existingIssue.description) {
             issue.description = $scope.issue.description;
         }
 
@@ -280,11 +282,15 @@ function IssueFormController($scope, ProjectService, IssueService, TrackerServic
         }
 
         if (angular.isDefined($scope.issue.tracker) && angular.isDefined($scope.issue.tracker.id)) {
-            issue.tracker_id = $scope.issue.tracker.id;
+            if (!angular.isDefined(existingIssue) || $scope.issue.tracker.id !== existingIssue.tracker_id) {
+                issue.tracker_id = $scope.issue.tracker.id;
+            }
         }
 
         if (angular.isDefined($scope.issue.priority) && angular.isDefined($scope.issue.priority.id)) {
-            issue.priority_id = $scope.issue.priority.id;
+            if (!angular.isDefined(existingIssue) || $scope.issue.priority.id !== existingIssue.priority_id) {
+                issue.priority_id = $scope.issue.priority.id;
+            }
         }
 
         return issue;
@@ -339,7 +345,7 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
 
         $scope.submitting = true;
         delete $scope.errors;
-        var submission = $scope.buildSubmission({});
+        var submission = $scope.buildSubmission();
         Restangular.all('issues').post(submission).then(
             function () {
                 $scope.submitting = false;
@@ -365,7 +371,10 @@ IssueCreateController.prototype = Object.create(IssueFormController.prototype);
 
 function IssueEditController($injector, $scope, ProjectService, TrackerService, IssueService, UserService, Restangular, $routeParams, $location, $rootScope) {
 
+    var originalIssue;
+
     IssueService.get($routeParams.id).then(function (issue) {
+        originalIssue = angular.copy(issue);
         $scope.issue = issue;
         $rootScope.project = $scope.issue.project;
     });
@@ -375,7 +384,8 @@ function IssueEditController($injector, $scope, ProjectService, TrackerService, 
         $scope.submitting = true;
         delete $scope.errors;
 
-        var submission = $scope.buildSubmission({});
+        var submission = $scope.buildSubmission(originalIssue);
+        console.log('Submission', originalIssue, $scope.issue, submission);
         Restangular.one('issues', $scope.issue.id).customPUT(submission).then(
             function (response) {
                 $scope.submitting = false;

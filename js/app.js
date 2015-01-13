@@ -54,33 +54,46 @@ angular.module('LightmineApp', [ 'LightmineApp.controllers', 'LightmineApp.filte
     .run(function ($rootScope, $location, Restangular) {
 
         Restangular.setRequestSuffix('.json');
+
+        /* Redmine does wrap the responses, so we need to extract them in oder to "restangularize" */
         Restangular.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
-            /* Redmine does wrap the responses, so we need to extract them in oder to "restangularize" */
-            if (what === "issues") {
-                if (operation === "get") {
-                    return data.issue;
-                }
-            } else if (what === "trackers") {
-                if (operation === "getList") {
-                    return data.trackers;
-                }
+
+            switch (what) {
+
+                case "issues":
+                    if (operation === "get") {
+                        return data.issue;
+                    }
+                    break;
+
+                case "trackers":
+                    if (operation === "getList") {
+                        return data.trackers;
+                    }
+                    break;
             }
-            console.log("Unmodified Response", data, operation, what, url, response, deferred);
+
+            console.debug("Unmodified Response", data, operation, what, url, response, deferred);
             return data;
         });
+
+        /* Redmine needs wrapped requests, so wrap them */
         Restangular.addRequestInterceptor(function (element, operation, what, url) {
-            if (what === "issues") {
-                if (operation === "put") {
-                    return {
-                        'issue': element
+
+            switch (what) {
+
+                case "issues":
+                    switch (operation) {
+                        case "put":
+                        case "post":
+                            return {
+                                'issue': element
+                            }
                     }
-                } else if (operation == "post") {
-                    return {
-                        'issue': element
-                    }
-                }
+                    break;
             }
-            console.log("Unmodified Request", element, operation, what, url);
+
+            console.debug("Unmodified Request", element, operation, what, url);
             return element;
         });
 
