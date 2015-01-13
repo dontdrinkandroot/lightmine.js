@@ -17,7 +17,7 @@
 
 <div spinner="issues" class="centered"></div>
 
-<div class="panel panel-default" ng-repeat="issue in issues.entries">
+<div class="panel panel-{{getTrackerMapping(issue.tracker)}}" ng-repeat="issue in issues.entries">
     <div class="panel-heading">
         <div class="dropdown pull-right">
             <a class="link" href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -37,13 +37,13 @@
             </ul>
         </div>
         <h3 class="panel-title">
-            <span class="label label-default">{{issue.tracker.name}}</span>
-            <a href="#!/issue/{{issue.id}}/edit">{{issue.subject}}</a>
+            <a href="#!/issue/{{issue.id}}/edit">#{{issue.id}}: {{issue.subject}}</a>
         </h3>
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-sm-6 col-md-4 col-lg-3">Id: {{issue.id}}</div>
+            <div class="col-sm-6 col-md-4 col-lg-3">Tracker: <span
+                    class="label label-default">{{issue.tracker.name}}</span></div>
             <div class="col-sm-6 col-md-4 col-lg-3">Status: {{issue.status.name}}</div>
             <div class="col-sm-6 col-md-4 col-lg-3">Priority: {{issue.priority.name}}</div>
             <div class="col-sm-6 col-md-4 col-lg-3">Assigned to: {{issue.assigned_to.name}}</div>

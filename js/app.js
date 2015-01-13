@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services', 'LightmineApp.directives', 'ngRoute', 'restangular'])
+angular.module('LightmineApp', [ 'LightmineApp.controllers', 'LightmineApp.filters', 'LightmineApp.services', 'LightmineApp.directives', 'ngRoute', 'restangular'])
 
     .config([ '$httpProvider', '$routeProvider', '$locationProvider', function ($httpProvider, $routeProvider, $locationProvider) {
 
@@ -11,7 +11,7 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
 
         $routeProvider.when('/project', {
             templateUrl: 'partials/project/list.html',
-            controller: ProjectListController
+            controller: 'ProjectListController'
         });
 
         $routeProvider.when('/project/:id', {
@@ -60,8 +60,12 @@ angular.module('LightmineApp', [ 'LightmineApp.filters', 'LightmineApp.services'
                 if (operation === "get") {
                     return data.issue;
                 }
+            } else if (what === "trackers") {
+                if (operation === "getList") {
+                    return data.trackers;
+                }
             }
-            console.log("Umodified Response", data, operation, what, url, response, deferred);
+            console.log("Unmodified Response", data, operation, what, url, response, deferred);
             return data;
         });
         Restangular.addRequestInterceptor(function (element, operation, what, url) {
