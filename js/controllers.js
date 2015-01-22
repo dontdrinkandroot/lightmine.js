@@ -249,12 +249,16 @@ function IssueFormController($scope, ProjectService, IssueService, TrackerServic
             issue.status_id = $scope.issue.status.id;
         }
 
-        if (angular.isDefined($scope.issue.subject) && $scope.issue.subject !== existingIssue.subject) {
-            issue.subject = $scope.issue.subject;
+        if (angular.isDefined($scope.issue.subject)) {
+            if (!angular.isDefined(existingIssue) || $scope.issue.subject !== existingIssue.subject) {
+                issue.subject = $scope.issue.subject;
+            }
         }
 
-        if (angular.isDefined($scope.issue.description) && $scope.issue.description !== existingIssue.description) {
-            issue.description = $scope.issue.description;
+        if (angular.isDefined($scope.issue.description)) {
+            if (!angular.isDefined(existingIssue) || $scope.issue.description !== existingIssue.description) {
+                issue.description = $scope.issue.description;
+            }
         }
 
         if (angular.isDefined($scope.issue.assigned_to) && angular.isDefined($scope.issue.assigned_to.id)) {
@@ -352,7 +356,8 @@ function IssueCreateController($injector, $scope, ProjectService, IssueService, 
                 $location.path("project/" + $scope.issue.project.id);
             },
             function (response) {
-                $scope.addError(response.data.errors);
+                console.error(response);
+                $scope.addError(response);
                 $scope.submitting = false;
             }
         );

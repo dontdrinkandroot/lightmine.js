@@ -60,6 +60,11 @@ angular.module('LightmineApp', [ 'LightmineApp.controllers', 'LightmineApp.filte
         };
 
         $rootScope.addError = function (error) {
+            if (angular.isDefined(error.statusText)) {
+                $rootScope.errors.push(error.statusText);
+                return;
+            }
+
             $rootScope.errors.push(error);
         };
 

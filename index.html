@@ -2,7 +2,7 @@
 <html ng-app="LightmineApp">
 <head>
 	<title>LightMine</title>
-	<meta charset="utf-8" />
+	<meta charset="iso-8859-1"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link href="less/theme.less" rel="stylesheet/less" type="test/css">
 </head>
@@ -55,9 +55,11 @@
 
 	<div class="container">
 
-        <div ng-repeat="error in errors" class="alert alert-danger" role="alert"></div>
-        {{error}}
-        <div class="ng-view">
+		<div ng-repeat="errorMessage in errors" class="alert alert-danger" role="alert">
+			{{errorMessage}}
+		</div>
+
+		<div class="ng-view">
 		</div>
 	</div>
 
